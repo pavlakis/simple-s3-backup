@@ -13,6 +13,14 @@ A simple Ruby script to back up MySQL database tables, MongoDB databases, full d
 
 `15 3 * * * /usr/bin/ruby /home/username/backups/simple-s3-backup.rb`
 
+**NOTE from sdh100shaun** 
+
+This fork added extra functionality to send a gmail email and requires 
+
+ruby-gmail gem 
+
+1. install ruby-gmail <https://rubygems.org/gems/ruby-gmail>
+
 **To do:**
 
 1. Split daily archives into separate directories in the bucket? Would be helpful for those with lots of files, and lots of days
