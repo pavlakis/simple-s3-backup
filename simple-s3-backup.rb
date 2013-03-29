@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 # Forked from https://github.com/billturner/simple-s3-backup
-# just added an extra email alert functionality 
+# just added an extra gmail alert functionality 
 # Shaun Hare 2013 
 
 
@@ -12,7 +12,7 @@ $LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__))
   require lib
 end
 include AWS::S3
-require 'ruby-gmail'
+require 'gmail' #note new dependancy
 require 'settings'
 
 # Initial setup
@@ -103,19 +103,19 @@ bucket.objects.select{ |o| o.last_modified.to_i < cutoff_date }.each do |f|
 end
 
 
-#mail out if requred
-if defined?(MAIL_ALERT)
+#mail out if required
+if defined?(GMAIL_ALERT)
 
-gmail = Gmail.new(MAIL_ALERT['email_from'], MAIL_ALERT['email_password'])
+gmail = Gmail.new(GMAIL_ALERT['email_from'], GMAIL_ALERT['email_password'])
 
   gmail.deliver do
-    to MAIL_ALERT['email_to']
-    subject "Backup for #{MAIL_ALERT["hostname"]}"
+    to GMAIL_ALERT['email_to']
+    subject "Backup for #{GMAIL_ALERT["hostname"]}"
     text_part do
-       body "The backup from ruby for #{MAIL_ALERT['hostname']} ran at #{Time.now.rfc2822}"
+       body "The backup from ruby for #{GMAIL_ALERT['hostname']} ran at #{Time.now.rfc2822}"
     end
     html_part do
-      body "<p>The backup from ruby for #{MAIL_ALERT['hostname']} ran at #{Time.now.rfc2822}</p>"
+      body "<p>The backup from ruby for #{GMAIL_ALERT['hostname']} ran at #{Time.now.rfc2822}</p>"
     end
 end
 gmail.logout

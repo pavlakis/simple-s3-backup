@@ -59,8 +59,10 @@ SINGLE_FILES = {
   'important_configs' => ['/etc/hosts', '/etc/my.cnf'],
   'other_configs' => ['/etc/syslog.conf', '/etc/smb.conf']
 }
+# GMAIL ALERT CONFIG
+#  * Add appropriate gmail details here to get an alert using gmail as the smtp server
 
-MAIL_ALERT = {
+GMAIL_ALERT = {
 	'email_to'=>'<recipient_email_address>',
 	'email_from'=>'<your-gmail-address>',
 	'hostname'=>'<server name or domain name>',
