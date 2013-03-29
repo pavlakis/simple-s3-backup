@@ -1,5 +1,10 @@
 #!/usr/bin/env ruby
 
+# Forked from https://github.com/billturner/simple-s3-backup
+# just added an extra email alert functionality 
+# Shaun Hare 2013 
+
+
 # Add local directory to LOAD_PATH
 $LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__))
 
@@ -7,7 +12,7 @@ $LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__))
   require lib
 end
 include AWS::S3
-
+require 'ruby-gmail'
 require 'settings'
 
 # Initial setup
@@ -96,3 +101,24 @@ cutoff_date = Time.now.utc.to_i - (DAYS_OF_ARCHIVES * 86400)
 bucket.objects.select{ |o| o.last_modified.to_i < cutoff_date }.each do |f|
   S3Object.delete(f.key, S3_BUCKET)
 end
+
+
+#mail out if requred
+if defined?(MAIL_ALERT)
+
+gmail = Gmail.new(MAIL_ALERT['email_from'], MAIL_ALERT['email_password'])
+
+  gmail.deliver do
+    to MAIL_ALERT['email_to']
+    subject "Backup for #{MAIL_ALERT["hostname"]}"
+    text_part do
+       body "The backup from ruby for #{MAIL_ALERT['hostname']} ran at #{Time.now.rfc2822}"
+    end
+    html_part do
+      body "<p>The backup from ruby for #{MAIL_ALERT['hostname']} ran at #{Time.now.rfc2822}</p>"
+    end
+end
+gmail.logout
+end
+ 
+end 

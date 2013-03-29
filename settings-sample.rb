@@ -59,3 +59,10 @@ SINGLE_FILES = {
   'important_configs' => ['/etc/hosts', '/etc/my.cnf'],
   'other_configs' => ['/etc/syslog.conf', '/etc/smb.conf']
 }
+
+MAIL_ALERT = {
+	'email_to'=>'<recipient_email_address>',
+	'email_from'=>'<your-gmail-address>',
+	'hostname'=>'<server name or domain name>',
+	'email_password' =>'<gmasil_password>'
+}
